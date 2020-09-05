@@ -7,6 +7,8 @@ const Constraint = Matter.Constraint;
 var stand1;
 var box1,box2,box3,box4,box5,box6,box7,box8,box9,box10,box11,box12,box13,box14,box15;
 var ball,slingshot;
+var score = 0;
+var bgc = "white";
 function preload()
 {
 	
@@ -42,7 +44,7 @@ function setup() {
 	//sixth layer
 	box15 = new Box(450,220,70,70);
 
-	ball = new Box(100,350,50,50);
+	ball = new Ball(100,350,50,50);
     slingshot = new SlingShot(ball.body,{x:100, y:350});
 	Engine.run(engine);
   
@@ -50,8 +52,28 @@ function setup() {
 
 
 function draw() {
-  Engine.update(engine);
-  background(0);
+	backgroundColor();
+  background(bgc);
+  box1.score();
+  box2.score();
+  box3.score();
+  box4.score();
+  box5.score();
+  box6.score();
+  box7.score();
+  box8.score();
+  box9.score();
+  box10.score();
+  box11.score();
+  box12.score();
+  box13.score();
+  box14.score();
+  box15.score();
+
+  noStroke();
+  textSize(35)
+  fill("white")
+  text("Score  " + score, width-300, 50)
   
   stand1.display();
   box1.display();
@@ -71,12 +93,12 @@ function draw() {
   box15.display();
   ball.display();
   slingshot.display();
-  
+  drawSprites();
  
 }
 
 function mouseDragged(){
-    Matter.Body.setPosition(ball.body, {x: mouseX , y: mouseY});
+Matter.Body.setPosition(ball.body,{x:mouseX,y:mouseY});
 }
 
 
@@ -84,3 +106,22 @@ function mouseReleased(){
 	slingshot.fly();
 }
 
+function keyPressed(){
+if(keyCode===32){
+	slingshot.attach(ball.body);
+}
+}
+async function backgroundColor(){
+    var response = await fetch("http://worldtimeapi.org/api/timezone/Asia/Kolkata");
+    var responseJSON = await response.json();
+
+    var datetime = responseJSON.datetime;
+    var hour = datetime.slice(11,13);
+    
+    if(hour>=0600 && hour<=1900){
+        bgc = "black";
+    }
+    else{
+        bgc = "lightBlue";
+    }
+}
